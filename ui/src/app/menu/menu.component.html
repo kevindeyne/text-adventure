@@ -1,0 +1,9 @@
+<div #parentDiv>
+  <ul>
+    <li *ngIf="hasRunningGame"><a routerLink="/game">Continue</a></li>
+    <li><a routerLink="/newgame">New game</a></li>
+    <li><a routerLink="/load">Load gamestate</a></li>
+    <li><a routerLink="/settings">Settings</a></li>
+    <li class='small'>{{version}} :: {{gameid}}</li>
+  </ul>
+</div>

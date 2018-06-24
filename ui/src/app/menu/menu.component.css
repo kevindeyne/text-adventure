@@ -1,0 +1,40 @@
+body {
+    position: absolute;
+
+    bottom: 0%;
+    right: 0%;
+    height: 100%;
+}
+
+div {
+    margin-top: 10%;
+    font-size: 1.5em;
+}
+
+ul {
+    list-style-type: none;
+}
+
+li {
+    padding: 0.2em;
+    text-align: center;
+}
+
+a {
+    color: aliceblue;
+    text-decoration: none;
+    padding: 0.5em;
+    
+    display: inline-block;
+    width: 300px;
+}
+
+a:hover{    
+    background-color: #474747;
+}
+
+.small {
+    padding-top: 2em;
+    font-size: 0.5em;
+    color:gray;
+}

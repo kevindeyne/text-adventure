@@ -1,0 +1,7 @@
+<div #autocomplete class="autocomplete-container">
+    <p>
+      <span *ngFor='let suggestion of suggestions'>{{suggestion}}</span>
+    </p>
+
+    <input type="text" (keyup)="onKey($event)" placeholder="command:" />
+</div>
