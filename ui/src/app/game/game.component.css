@@ -10,6 +10,13 @@ div {
 
 p {
     vertical-align:text-bottom;
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.info{
+    color:#cab25a;    
 }
 
 /*scrollbar color*/
@@ -35,8 +42,8 @@ footer {
 
 footer input {
     position: fixed;
-    bottom: 1em;
-    left: 1em;
+    bottom: 2em;
+    left: 2em;
 
     background-color: transparent;
     border: none;
@@ -47,4 +54,26 @@ footer input {
 
     font-family: 'Roboto Mono', monospace;
     font-size: 1em;
+}
+
+.hidden {
+    display: none;
+}
+
+/* conversation */
+section p {
+    padding: 5px;
+    width:60%;
+}
+
+section p:hover {
+    color: #0c0f13;
+    background-color: #e7f3ff;
+    cursor: pointer;
+}
+
+section {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
 }

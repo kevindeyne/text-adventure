@@ -5,12 +5,12 @@ import { Routes, RouterModule } from '@angular/router';
 import { TasksComponent } from './tasks/tasks.component';
 import { ProfileComponent } from './profile/profile.component';
 import { SettingsComponent } from './settings/settings.component';
+import { ConversationComponent } from './game/conversation/conversation.component';
 import { GameComponent } from './game/game.component';
 import { MenuComponent } from './menu/menu.component';
 import { NavComponent } from './nav/nav.component';
 import { ExploreComponent } from './explore/explore.component';
 import { AutocompleteComponent } from './explore/autocomplete/autocomplete.component';
-import { ConversationComponent } from './explore/conversation/conversation.component';
 import { NewgameComponent } from './newgame/newgame.component';
 
 const appRouters: Routes = [

@@ -1,5 +1,4 @@
-import { Component, OnInit, ElementRef, Renderer2, Inject, ViewChild } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
+import { Component, OnInit, ElementRef, Renderer2, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-game',
@@ -8,19 +7,26 @@ import { DOCUMENT } from '@angular/common';
 })
 export class GameComponent implements OnInit {
 
-  @ViewChild('parentDiv') parentDiv: ElementRef;
+  private convHeight = '';
+  private inputClass = '';
+  private convClass = 'hidden';
+
+  @ViewChild('conversation') conversation: ElementRef;
   @ViewChild('focus') focus: ElementRef;
+  @ViewChild('parentDiv') parentDiv: ElementRef;
 
   private sentences: string[] = [];
+  private convOptions = ['This is a long text reply that goes on for quite a while. And on and on.' +
+  'This is a long text reply that goes on for quite a while. And on and on.', 'My dude. Greetings.'];
 
-  constructor() {
-  }
+  constructor(private render: Renderer2) { }
 
   ngOnInit() {
-    this.launchTimeout();
+    this.launchTimeout(); // test
     this.focusTimeout();
   }
 
+  // test
   launchTimeout() {
     setTimeout(() => {
       const counter = this.sentences.length + 1;
@@ -44,4 +50,43 @@ export class GameComponent implements OnInit {
     }, 500);
   }
 
+  switchView() {
+    if (this.convClass === '') {
+      this.inputClass = '';
+      this.convClass = 'hidden';
+    } else {
+      this.inputClass = 'hidden';
+      this.convClass = '';
+    }
+
+    setTimeout(() => {
+      this.reformatLocation();
+    }, 10);
+  }
+
+  reformatLocation() {
+    const height = this.conversation.nativeElement.offsetHeight;
+    if (height === 0) {
+      this.convHeight = '3em';
+    } else {
+      this.convHeight = height + 'px';
+    }
+  }
+
+  onKey(event: KeyboardEvent) {
+    const target = (event.currentTarget as HTMLInputElement);
+    const value = target.value;
+
+    if (event.key === 'Enter') {
+      if (value.startsWith('talk ')) {
+        this.switchView();
+      }
+
+      target.value = '';
+    }
+  }
+
+  onClick(event: MouseEvent) {
+    this.switchView();
+  }
 }

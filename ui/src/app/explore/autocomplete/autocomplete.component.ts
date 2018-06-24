@@ -1,4 +1,4 @@
-import { ExploreswitchService } from './../../services/exploreswitch.service';
+import { InteractionViewService } from './../../services/interactionview.service';
 import { Component, OnInit, ViewChild, ElementRef, Renderer2, Input, OnDestroy } from '@angular/core';
 
 @Component({
@@ -14,7 +14,7 @@ export class AutocompleteComponent implements OnInit, OnDestroy {
   options: string[] = [];
   optionsEN = ['look around', 'speak with <person>', 'talk to <person>', 'go to <location>'];
 
-  constructor(private render: Renderer2, private switcher: ExploreswitchService) { }
+  constructor(private render: Renderer2, private switcher: InteractionViewService) { }
 
   onKey(event: KeyboardEvent) {
     const target = (event.currentTarget as HTMLInputElement);
