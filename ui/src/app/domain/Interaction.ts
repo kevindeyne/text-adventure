@@ -1,5 +1,6 @@
 import { ConditionalText } from './ConditionalText';
 export class Interaction {
+
     public commands: string[];
     public nextSceneId: string;
     public action: Function;
@@ -25,5 +26,10 @@ export class Interaction {
 
     addConditionalText (conditional: Function, text: string) {
         this.oneTimeMessages.push(new ConditionalText(text, conditional));
+    }
+
+    jumpToConversationIfConditional(nextSceneId: string, conditional: Function) {
+        //TODO how?
+        throw new Error("Method not implemented.");
     }
 }

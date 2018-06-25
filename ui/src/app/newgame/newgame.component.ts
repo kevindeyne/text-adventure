@@ -18,6 +18,7 @@ export class NewgameComponent implements OnInit {
       localStorage.setItem('game-id', UUID.UUID());
       localStorage.setItem('current-scene', '0_init-car');
       localStorage.setItem('game-history', JSON.stringify([]));
+      localStorage.removeItem('game-history-loading-done');
       game.reloadScene();
       this.router.navigate(['/game']);
     /*} else {
