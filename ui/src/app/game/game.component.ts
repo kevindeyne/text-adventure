@@ -19,7 +19,7 @@ export class GameComponent implements OnInit {
 
   private sentences: string[] = [];
   private convOptions = ['This is a long text reply that goes on for quite a while. And on and on.' +
-  'This is a long text reply that goes on for quite a while. And on and on.', 'My dude. Greetings.'];
+    'This is a long text reply that goes on for quite a while. And on and on.', 'My dude. Greetings.'];
 
   ngOnInit() {
     this.loadHistory();
@@ -27,7 +27,7 @@ export class GameComponent implements OnInit {
     this.focusTimeout();
   }
 
-  loadHistory(){
+  loadHistory() {
     let history = JSON.parse(localStorage.getItem('game-history'));
     for (let sentence of history) {
       this.addSentence(sentence);
@@ -35,11 +35,13 @@ export class GameComponent implements OnInit {
   }
 
   load() {
-    if(this.loadedSceneId !== game.currentScene.id){
-      this.loadedSceneId = game.currentScene.id;
-      let s = game.currentScene.scene;
-      for (let sentence of s.text) {
-        this.addSentence(sentence.getText());
+    if (this.loadedSceneId !== game.currentScene.id) {
+      if (localStorage.getItem('game-history-loading-done') === null) {
+        this.loadedSceneId = game.currentScene.id;
+        let s = game.currentScene.scene;
+        for (let sentence of s.text) {
+          this.addSentence(sentence.getText());
+        }
       }
     }
   }
@@ -99,18 +101,33 @@ export class GameComponent implements OnInit {
 
   loadSceneThroughCommand(command: string) {
     let s = game.currentScene.scene;
-    for (let interaction of s.interactions) {
+    interactionLoop: for (let interaction of s.interactions) {
       for (let c of interaction.commands) {
-        if(command.startsWith(c)){
+        if (command.includes(c)) {
+
           this.addSentence('> ' + command);
+          this.showOneTimeMessages(interaction);
           localStorage.setItem('game-history', JSON.stringify(this.sentences));
-          interaction.loadScene();
-          game.reloadScene();
-          this.load();
-          interaction.runAction();
+          if (interaction.nextSceneId !== undefined) {
+            localStorage.removeItem('game-history-loading-done');
+            interaction.loadScene();
+            game.reloadScene();
+            this.load();
+          }
+
+          interaction.runAction(document.getElementsByTagName("html")[0]);
+          break interactionLoop;
+
         }
       }
     }
+  }
+
+  private showOneTimeMessages(interaction) {
+    localStorage.setItem('game-history-loading-done', '1');
+    for (let sentence of interaction.oneTimeMessages) {
+      this.addSentence(sentence.getText());
+    }    
   }
 
   onClick(event: MouseEvent) {

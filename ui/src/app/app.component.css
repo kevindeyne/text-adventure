@@ -1,6 +1,9 @@
 * {
     font-family: 'Roboto Mono', monospace;
     font-size: 0.95em;
-    color: #e7f3ff;
+    color: #e7f3ff;    
     background-color: #0c0f13;
+    -webkit-transition: background-color 1s linear;
+    -ms-transition: background-color 1s linear;
+    transition: background-color 1s linear;
 }
