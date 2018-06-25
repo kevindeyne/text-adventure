@@ -1,4 +1,4 @@
-import { gameid } from './../globals/globals';
+import { game } from './../globals/globals';
 import { Component, OnInit } from '@angular/core';
 import { UUID } from 'angular2-uuid';
 import { Router } from '@angular/router';
@@ -16,6 +16,8 @@ export class NewgameComponent implements OnInit {
   ngOnInit() {
     if (!globals.hasRunningGame) {
       localStorage.setItem('game-id', UUID.UUID());
+      localStorage.setItem('current-scene', '0_init-car');
+      game.reloadScene();
       this.router.navigate(['/game']);
     } else {
       // todo: show are you sure

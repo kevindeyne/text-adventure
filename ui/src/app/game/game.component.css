@@ -16,7 +16,11 @@ p {
 }
 
 .info{
-    color:#cab25a;    
+    color:#cab25a;
+}
+
+.self{
+    color:gray;
 }
 
 /*scrollbar color*/
@@ -25,12 +29,13 @@ p {
 }
  
 ::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0);
     -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0);
 }
  
 ::-webkit-scrollbar-thumb {
-  background-color: rbg(231, 243, 255);
-  outline: 1px solid rbg(231, 243, 255);
+  background-color: black;
+  outline: 1px solid black;
 }
 
 /*input*/
@@ -38,6 +43,7 @@ footer {
     position: fixed;
     bottom: 0%;
     height: 3em;
+    width: 100%;
 }
 
 footer input {
@@ -61,19 +67,20 @@ footer input {
 }
 
 /* conversation */
-section p {
-    padding: 5px;
-    width:60%;
-}
-
-section p:hover {
-    color: #0c0f13;
-    background-color: #e7f3ff;
-    cursor: pointer;
-}
-
 section {
     position: fixed;
     bottom: 0;
     width: 100%;
+}
+
+section p {
+    padding: 5px;
+    width: 60%;
+    color: #9dc7ff;
+}
+
+section p:hover {
+    background: #000000;
+    color: #9dc7ff;
+    cursor: pointer;
 }

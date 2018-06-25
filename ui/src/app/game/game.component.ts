@@ -1,4 +1,5 @@
-import { Component, OnInit, ElementRef, Renderer2, ViewChild } from '@angular/core';
+import { game } from './../globals/globals';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-game',
@@ -19,21 +20,16 @@ export class GameComponent implements OnInit {
   private convOptions = ['This is a long text reply that goes on for quite a while. And on and on.' +
   'This is a long text reply that goes on for quite a while. And on and on.', 'My dude. Greetings.'];
 
-  constructor(private render: Renderer2) { }
-
   ngOnInit() {
-    this.launchTimeout(); // test
+    this.load();
     this.focusTimeout();
   }
 
-  // test
-  launchTimeout() {
-    setTimeout(() => {
-      const counter = this.sentences.length + 1;
-      this.addSentence('Sentence #' + counter + '<br/>' + 'tessst');
-
-      if (counter < 100) { this.launchTimeout(); }
-    }, 10);
+  load() {
+    let s = game.currentScene.scene;
+    for (let sentence of s.text) {
+      this.addSentence(sentence);
+    }
   }
 
   addSentence(sentence) {
@@ -45,7 +41,9 @@ export class GameComponent implements OnInit {
 
   focusTimeout() {
     setTimeout(() => {
-      this.focus.nativeElement.focus();
+      if (this.inputClass === '') {
+        this.focus.nativeElement.focus();
+      }
       this.focusTimeout();
     }, 500);
   }
@@ -69,7 +67,7 @@ export class GameComponent implements OnInit {
     if (height === 0) {
       this.convHeight = '3em';
     } else {
-      this.convHeight = height + 'px';
+      this.convHeight = (height + 10) + 'px';
     }
   }
 
@@ -82,11 +80,27 @@ export class GameComponent implements OnInit {
         this.switchView();
       }
 
+      this.addSentence('> ' + target.value);
+      this.loadSceneThroughCommand(target.value);
       target.value = '';
     }
   }
 
+  loadSceneThroughCommand(command: string) {
+    let s = game.currentScene.scene;
+    for (let interaction of s.interactions) {    
+      for (let c of interaction.commands) {
+        if(command.startsWith(c)){
+          interaction.loadScene();
+          this.load();
+        }
+      }
+    }
+  }
+
   onClick(event: MouseEvent) {
+    const target = (event.currentTarget as HTMLInputElement);
+    this.addSentence('> ' + target.innerText);
     this.switchView();
   }
 }
