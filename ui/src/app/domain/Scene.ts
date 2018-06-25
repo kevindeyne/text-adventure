@@ -1,6 +1,7 @@
+import { ConditionalText } from './ConditionalText';
 import { Interaction } from './Interaction';
 export class Scene {
-    public text: string[];
+    public text: ConditionalText[];
     public interactions: Interaction[];
 
     constructor () {
@@ -9,6 +10,10 @@ export class Scene {
     }
 
     addText (text: string) {
-        this.text.push(text);
+        this.text.push(new ConditionalText(text, function(){ return true; }));
+    }
+
+    addConditionalText (conditional: Function, text: string) {
+        this.text.push(new ConditionalText(text, conditional));
     }
 }

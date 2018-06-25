@@ -1,14 +1,20 @@
-import { Scene } from "./Scene";
-
 export class Interaction {
-    public commands: string[];
-    public nextSceneId: String;
 
-    constructor (commands) {
+    public commands: string[];
+    public nextSceneId: string;
+    public action: Function;
+
+    constructor(commands) {
         this.commands = commands;
     }
 
-    loadScene() : Scene{
-        return new Scene();
+    loadScene() {
+        localStorage.setItem('current-scene', this.nextSceneId);
+    }
+
+    runAction() {
+        if (undefined !== this.action) {
+            this.action();
+        }
     }
 }

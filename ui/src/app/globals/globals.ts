@@ -1,4 +1,3 @@
-import { SceneLookup } from './../loader/SceneLookup';
 import { Game } from '../domain/Game';
 
 export const sep = '/';

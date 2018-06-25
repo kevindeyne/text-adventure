@@ -11,6 +11,7 @@ export class GameComponent implements OnInit {
   private convHeight = '';
   private inputClass = '';
   private convClass = 'hidden';
+  private loadedSceneId = null;
 
   @ViewChild('conversation') conversation: ElementRef;
   @ViewChild('focus') focus: ElementRef;
@@ -21,14 +22,25 @@ export class GameComponent implements OnInit {
   'This is a long text reply that goes on for quite a while. And on and on.', 'My dude. Greetings.'];
 
   ngOnInit() {
+    this.loadHistory();
     this.load();
     this.focusTimeout();
   }
 
-  load() {
-    let s = game.currentScene.scene;
-    for (let sentence of s.text) {
+  loadHistory(){
+    let history = JSON.parse(localStorage.getItem('game-history'));
+    for (let sentence of history) {
       this.addSentence(sentence);
+    }
+  }
+
+  load() {
+    if(this.loadedSceneId !== game.currentScene.id){
+      this.loadedSceneId = game.currentScene.id;
+      let s = game.currentScene.scene;
+      for (let sentence of s.text) {
+        this.addSentence(sentence.getText());
+      }
     }
   }
 
@@ -80,7 +92,6 @@ export class GameComponent implements OnInit {
         this.switchView();
       }
 
-      this.addSentence('> ' + target.value);
       this.loadSceneThroughCommand(target.value);
       target.value = '';
     }
@@ -88,11 +99,15 @@ export class GameComponent implements OnInit {
 
   loadSceneThroughCommand(command: string) {
     let s = game.currentScene.scene;
-    for (let interaction of s.interactions) {    
+    for (let interaction of s.interactions) {
       for (let c of interaction.commands) {
         if(command.startsWith(c)){
+          this.addSentence('> ' + command);
+          localStorage.setItem('game-history', JSON.stringify(this.sentences));
           interaction.loadScene();
+          game.reloadScene();
           this.load();
+          interaction.runAction();
         }
       }
     }
