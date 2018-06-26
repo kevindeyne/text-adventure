@@ -1,7 +1,6 @@
 import { Interaction } from './../domain/Interaction';
-import { game, hasLoaded } from './../globals/globals';
+import { game } from './../globals/globals';
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
-import { INTERNAL_BROWSER_DYNAMIC_PLATFORM_PROVIDERS } from '@angular/platform-browser-dynamic/src/platform_providers';
 import { Conversation } from '../domain/Conversation';
 
 @Component({
@@ -24,7 +23,7 @@ export class GameComponent implements OnInit {
   private sentences: string[] = [];
   private convOptions: string[] = [];
 
-  constructor(){
+  constructor() {
     this.sentences = [];
     this.convOptions = [];
     this.loadHistory();
@@ -33,8 +32,12 @@ export class GameComponent implements OnInit {
   }
 
   ngOnInit() {
-    if(null == localStorage.getItem('hasloaded')){
+    if (null == localStorage.getItem('hasloaded')) {
       this.jumpAhead();
+    }
+
+    if (null !== localStorage.getItem('current-conversation')) {
+      this.showConversation(localStorage.getItem('current-conversation'));
     }
   }
 
@@ -139,11 +142,15 @@ export class GameComponent implements OnInit {
 
   handleConversation(interaction: Interaction) {
     if (interaction.hasNextConversation()) {
-      this.enableConversationMode(true);
       let cId = interaction.nextConversation.getConversationId();
-      let c: Conversation = game.reloadConversation(cId);
-      this.convOptions = c.getOptions();
+      this.showConversation(cId);
     }
+  }
+
+  showConversation(id: string) {
+    this.enableConversationMode(true);
+    let c: Conversation = game.reloadConversation(id);
+    this.convOptions = c.getOptions();
   }
 
   private showOneTimeMessages(interaction) {

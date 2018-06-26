@@ -18,8 +18,11 @@ export class Interaction {
         if (this.nextScene !== undefined) {
             localStorage.setItem('current-scene', this.nextScene.getNextSceneId());
         }
+
         if (this.nextConversation !== undefined) {
             localStorage.setItem('current-conversation', this.nextConversation.getConversationId());
+        } else {
+            localStorage.removeItem('current-conversation');
         }
     }
 
