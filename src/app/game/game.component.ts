@@ -151,6 +151,7 @@ export class GameComponent implements OnInit {
     this.enableConversationMode(true);
     let c: Conversation = game.reloadConversation(id);
     if (c !== null) {
+      this.addOldClassToAll();
       for (let text of c.text) {
         this.addSentence(text.getText());
       }
