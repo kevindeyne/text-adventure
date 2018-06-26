@@ -16,11 +16,15 @@ p {
 }
 
 .info{
-    color:#cab25a;
+    color:#cab25a !important;
 }
 
 .self{
-    color:gray;
+    color:gray !important;
+}
+
+.old {
+    color: #b9b9b9;
 }
 
 /*scrollbar color*/

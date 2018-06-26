@@ -17,6 +17,7 @@ export class NewgameComponent implements OnInit {
     /*if (!globals.hasRunningGame) {*/
       localStorage.setItem('game-id', UUID.UUID());
       localStorage.setItem('current-scene', '0_init-car');
+      localStorage.removeItem('current-conversation');
       localStorage.setItem('game-history', JSON.stringify([]));
       localStorage.removeItem('game-history-loading-done');
       game.reloadScene();

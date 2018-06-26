@@ -1,3 +1,4 @@
+import { ConditionalSceneSwitch } from './../../domain/ConditionalSceneSwitch';
 import { Interaction } from './../../domain/Interaction';
 import * as Interactions from './../../globals/Interactions';
 import { Scene } from './../../domain/Scene';
@@ -16,7 +17,7 @@ export class InitCarScene implements IScene {
         this.scene.addText('(In order to interact with the story, type in your action where it says \'enter command\'. Try \'look around\')');
 
         let lookAround = new Interaction(Interactions.LOOK_AROUND);
-        lookAround.nextSceneId = '0_car-dark';
+        lookAround.nextScene = new ConditionalSceneSwitch('0_car-dark', function() { return true; });
         this.scene.interactions = [lookAround];
     }
 }

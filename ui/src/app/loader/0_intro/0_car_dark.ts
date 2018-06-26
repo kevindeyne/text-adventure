@@ -1,3 +1,4 @@
+import { ConditionalSceneSwitch } from './../../domain/ConditionalSceneSwitch';
 import { game } from './../../globals/globals';
 import { Interaction } from './../../domain/Interaction';
 import { Scene } from './../../domain/Scene';
@@ -19,7 +20,7 @@ export class CarDarkScene implements IScene {
             game.car.light = true;
             //TODO htmlTag.style.backgroundColor = '#111a25';
         };
-        press.nextSceneId = '0_car-light';
+        press.nextScene = new ConditionalSceneSwitch('0_car-light', function() { return true; });
         this.scene.interactions = [press];
     }
 }

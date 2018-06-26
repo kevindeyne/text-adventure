@@ -2,6 +2,8 @@ import { Interaction } from './../../domain/Interaction';
 import { Scene } from './../../domain/Scene';
 import { IScene } from '../../domain/IScene';
 import { game } from '../../globals/globals';
+import { ConditionalSceneSwitch } from '../../domain/ConditionalSceneSwitch';
+import { ConditionalConversationSwitch } from '../../domain/ConditionalConversationSwitch';
 
 export class CarLightScene implements IScene {
 
@@ -18,7 +20,7 @@ export class CarLightScene implements IScene {
         this.scene.interactions = [];
 
         let press = new Interaction(['button', 'light']);
-        press.nextSceneId = '0_car-dark';
+        press.nextScene = new ConditionalSceneSwitch('0_car-dark', function() { return true; });
         press.action = function (htmlTag: HTMLElement) {
             game.car.light = false;
             //TODO htmlTag.style.backgroundColor = '#0c0f13';
@@ -33,7 +35,7 @@ export class CarLightScene implements IScene {
         radio.addConditionalText(function(){ return game.car.closeToBorder; }, closeToBorderText);
         radio.addConditionalText(function(){ return game.car.closeToBorder; }, closeToBorderText2);
         radio.action = function(){ game.car.closeToBorder = true; };
-        radio.jumpToConversationIfConditional('1_checkpoint_approach', function(){ return game.car.closeToBorder; });
+        radio.nextConversation = new ConditionalConversationSwitch('1_checkpoint-approach', function(){ return game.car.closeToBorder; });
         this.scene.interactions.push(radio);
 
         let compartment = new Interaction(['compartment']);
@@ -41,7 +43,7 @@ export class CarLightScene implements IScene {
         compartment.addConditionalText(function(){ return game.car.closeToBorder; }, closeToBorderText);
         compartment.addConditionalText(function(){ return game.car.closeToBorder; }, closeToBorderText2);
         compartment.action = function(){ game.car.closeToBorder = true; };
-        compartment.jumpToConversationIfConditional('1_checkpoint_approach', function(){ return game.car.closeToBorder; });
+        compartment.nextConversation = new ConditionalConversationSwitch('1_checkpoint-approach', function(){ return game.car.closeToBorder; });
         this.scene.interactions.push(compartment);
     }
 }

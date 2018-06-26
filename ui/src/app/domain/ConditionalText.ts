@@ -1,4 +1,3 @@
-import { Interaction } from './Interaction';
 export class ConditionalText {
     private text: string;
     private conditional: Function;

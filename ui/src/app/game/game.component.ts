@@ -1,5 +1,7 @@
+import { Interaction } from './../domain/Interaction';
 import { game } from './../globals/globals';
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { INTERNAL_BROWSER_DYNAMIC_PLATFORM_PROVIDERS } from '@angular/platform-browser-dynamic/src/platform_providers';
 
 @Component({
   selector: 'app-game',
@@ -12,6 +14,7 @@ export class GameComponent implements OnInit {
   private inputClass = '';
   private convClass = 'hidden';
   private loadedSceneId = null;
+  private htmlTag = document.getElementsByTagName("html")[0];
 
   @ViewChild('conversation') conversation: ElementRef;
   @ViewChild('focus') focus: ElementRef;
@@ -62,8 +65,8 @@ export class GameComponent implements OnInit {
     }, 500);
   }
 
-  switchView() {
-    if (this.convClass === '') {
+  enableConversationMode(turnon: boolean) {
+    if (!turnon) {
       this.inputClass = '';
       this.convClass = 'hidden';
     } else {
@@ -90,36 +93,47 @@ export class GameComponent implements OnInit {
     const value = target.value;
 
     if (event.key === 'Enter') {
-      if (value.startsWith('talk ')) {
-        this.switchView();
-      }
-
       this.loadSceneThroughCommand(target.value);
       target.value = '';
     }
   }
 
+  addOldClassToAll(){
+    let items : HTMLParagraphElement[] = Array.from(document.querySelectorAll('p'));
+    items.forEach(element => { element.classList.add('old'); });
+  }
+
   loadSceneThroughCommand(command: string) {
     let s = game.currentScene.scene;
-    interactionLoop: for (let interaction of s.interactions) {
-      for (let c of interaction.commands) {
+    interactionLoop: for (let i of s.interactions) {
+      for (let c of i.commands) {
         if (command.includes(c)) {
-
+          this.addOldClassToAll();
           this.addSentence('> ' + command);
-          this.showOneTimeMessages(interaction);
-          localStorage.setItem('game-history', JSON.stringify(this.sentences));
-          if (interaction.nextSceneId !== undefined) {
-            localStorage.removeItem('game-history-loading-done');
-            interaction.loadScene();
-            game.reloadScene();
-            this.load();
-          }
-
-          interaction.runAction(document.getElementsByTagName("html")[0]);
+          this.showOneTimeMessages(i);
+          this.handleHasScene(i);
+          this.handleHasConversation(i);
+          i.runAction(this.htmlTag);
           break interactionLoop;
-
         }
       }
+    }
+  }
+
+  handleHasScene(interaction: Interaction) {
+    if (interaction.hasNextScene()) {
+      this.enableConversationMode(false);
+      localStorage.removeItem('game-history-loading-done');
+      game.reloadScene();
+      this.load();
+    }
+  }
+
+  handleHasConversation(interaction: Interaction) {
+    if (interaction.hasNextConversation()) {
+      this.enableConversationMode(true);
+      let c = interaction.nextConversation.getConversationId();
+      this.convOptions
     }
   }
 
@@ -127,12 +141,14 @@ export class GameComponent implements OnInit {
     localStorage.setItem('game-history-loading-done', '1');
     for (let sentence of interaction.oneTimeMessages) {
       this.addSentence(sentence.getText());
-    }    
+    }
+    localStorage.setItem('game-history', JSON.stringify(this.sentences));
+    interaction.loadScene();
   }
 
   onClick(event: MouseEvent) {
     const target = (event.currentTarget as HTMLInputElement);
     this.addSentence('> ' + target.innerText);
-    this.switchView();
+    //this.switchView();
   }
 }
