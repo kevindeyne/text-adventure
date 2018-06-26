@@ -16,10 +16,13 @@ export class NewgameComponent implements OnInit {
   ngOnInit() {
     /*if (!globals.hasRunningGame) {*/
       localStorage.setItem('game-id', UUID.UUID());
-      localStorage.setItem('current-scene', '0_init-car');
-      localStorage.removeItem('current-conversation');
+      localStorage.setItem('current-scene', '0_init-car');      
       localStorage.setItem('game-history', JSON.stringify([]));
+
+      localStorage.removeItem('current-conversation');
       localStorage.removeItem('game-history-loading-done');
+      localStorage.removeItem('hasloaded');
+      
       game.reloadScene();
       this.router.navigate(['/game']);
     /*} else {

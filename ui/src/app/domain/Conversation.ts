@@ -3,7 +3,7 @@ import { Interaction } from './Interaction';
 export class Conversation {
 
     public text: ConditionalText[];
-    public options: ConditionalText[];
+    private options: ConditionalText[];
     public interactions: Interaction[];
 
     constructor() {
@@ -26,5 +26,16 @@ export class Conversation {
 
     addConditionalOption(conditional: Function, text: string) {
         this.options.push(new ConditionalText(text, conditional));
+    }
+
+    getOptions(): string[] {
+        let result = [];
+        for (let option of this.options) {
+            let t = option.getText();
+            if(t !== null){
+                result.push(t);
+            }
+        }
+        return result;
     }
 }

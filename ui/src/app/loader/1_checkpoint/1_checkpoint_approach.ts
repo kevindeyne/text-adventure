@@ -11,8 +11,9 @@ export class CheckpointApproachConversation implements IConversation {
         this.conversation = new Conversation();
         this.conversation.addText('This is a conversation');
 
-        this.conversation.addOption('Hello');
-        this.conversation.addOption('Hello 2');
+        this.conversation.addOption('[Allow the car to pull up to the checkpoint]');
+        this.conversation.addOption('[Stop the car and consider your options]');
+        this.conversation.addOption('[Override the automated slowdown and accelerate]');
         this.conversation.addConditionalOption(function () { return false; }, 'Hello 3');
 
     }

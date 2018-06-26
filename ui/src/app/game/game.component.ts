@@ -1,7 +1,8 @@
 import { Interaction } from './../domain/Interaction';
-import { game } from './../globals/globals';
+import { game, hasLoaded } from './../globals/globals';
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { INTERNAL_BROWSER_DYNAMIC_PLATFORM_PROVIDERS } from '@angular/platform-browser-dynamic/src/platform_providers';
+import { Conversation } from '../domain/Conversation';
 
 @Component({
   selector: 'app-game',
@@ -21,13 +22,20 @@ export class GameComponent implements OnInit {
   @ViewChild('parentDiv') parentDiv: ElementRef;
 
   private sentences: string[] = [];
-  private convOptions = ['This is a long text reply that goes on for quite a while. And on and on.' +
-    'This is a long text reply that goes on for quite a while. And on and on.', 'My dude. Greetings.'];
+  private convOptions: string[] = [];
 
-  ngOnInit() {
+  constructor(){
+    this.sentences = [];
+    this.convOptions = [];
     this.loadHistory();
     this.load();
     this.focusTimeout();
+  }
+
+  ngOnInit() {
+    if(null == localStorage.getItem('hasloaded')){
+      this.jumpAhead();
+    }
   }
 
   loadHistory() {
@@ -98,8 +106,8 @@ export class GameComponent implements OnInit {
     }
   }
 
-  addOldClassToAll(){
-    let items : HTMLParagraphElement[] = Array.from(document.querySelectorAll('p'));
+  addOldClassToAll() {
+    let items: HTMLParagraphElement[] = Array.from(document.querySelectorAll('p'));
     items.forEach(element => { element.classList.add('old'); });
   }
 
@@ -111,8 +119,8 @@ export class GameComponent implements OnInit {
           this.addOldClassToAll();
           this.addSentence('> ' + command);
           this.showOneTimeMessages(i);
-          this.handleHasScene(i);
-          this.handleHasConversation(i);
+          this.handleScene(i);
+          this.handleConversation(i);
           i.runAction(this.htmlTag);
           break interactionLoop;
         }
@@ -120,7 +128,7 @@ export class GameComponent implements OnInit {
     }
   }
 
-  handleHasScene(interaction: Interaction) {
+  handleScene(interaction: Interaction) {
     if (interaction.hasNextScene()) {
       this.enableConversationMode(false);
       localStorage.removeItem('game-history-loading-done');
@@ -129,11 +137,12 @@ export class GameComponent implements OnInit {
     }
   }
 
-  handleHasConversation(interaction: Interaction) {
+  handleConversation(interaction: Interaction) {
     if (interaction.hasNextConversation()) {
       this.enableConversationMode(true);
-      let c = interaction.nextConversation.getConversationId();
-      this.convOptions
+      let cId = interaction.nextConversation.getConversationId();
+      let c: Conversation = game.reloadConversation(cId);
+      this.convOptions = c.getOptions();
     }
   }
 
@@ -150,5 +159,13 @@ export class GameComponent implements OnInit {
     const target = (event.currentTarget as HTMLInputElement);
     this.addSentence('> ' + target.innerText);
     //this.switchView();
+  }
+
+  jumpAhead() {
+    localStorage.setItem('hasloaded', '1');
+    this.loadSceneThroughCommand('look around');
+    this.loadSceneThroughCommand('press button');
+    this.loadSceneThroughCommand('radio');
+    this.loadSceneThroughCommand('compartment');
   }
 }

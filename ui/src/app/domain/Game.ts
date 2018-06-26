@@ -1,13 +1,17 @@
+import { ConvLookup } from './../loader/ConvLookup';
 import { IConversation } from './IConversation';
 import { SceneLookup } from './../loader/SceneLookup';
 import { IScene } from './IScene';
 import { Car } from './Car';
-import { ElementRef } from '@angular/core';
+import { Conversation } from './Conversation';
 
 export class Game {
-    public lookup = new SceneLookup();
+    public sLookup = new SceneLookup();
+    public cLookup = new ConvLookup();
+
     public currentScene: IScene;
-    public currentConversation: IConversation;
+    public currentConversation: Conversation;
+
     public car: Car = new Car();
 
     constructor() {
@@ -15,7 +19,16 @@ export class Game {
     }
 
     reloadScene(): IScene {
-        this.currentScene = (localStorage.getItem('current-scene') !== null) ? this.lookup.listing[localStorage.getItem('current-scene')] : null;
+        this.currentScene = (localStorage.getItem('current-scene') !== null) ? this.sLookup.listing[localStorage.getItem('current-scene')] : null;
         return this.currentScene;
+    }
+
+    reloadConversation(id : string): Conversation {
+        let conv : IConversation = (localStorage.getItem('current-scene') !== null) ? this.cLookup.listing[localStorage.getItem('current-conversation')] : null;
+        if(conv !== null){
+            this.currentConversation = conv.conversation;
+            return this.currentConversation;
+        }
+        return null;
     }
 }
