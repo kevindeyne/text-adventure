@@ -10,7 +10,7 @@ export class Scene {
     }
 
     addText (text: string) {
-        this.text.push(new ConditionalText(text, function(){ return true; }));
+        this.addConditionalText(function(){ return true; }, text);
     }
 
     addConditionalText (conditional: Function, text: string) {

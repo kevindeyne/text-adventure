@@ -32,12 +32,12 @@ export class GameComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (null == localStorage.getItem('hasloaded')) {
-      this.jumpAhead();
-    }
-
     if (null !== localStorage.getItem('current-conversation')) {
       this.showConversation(localStorage.getItem('current-conversation'));
+    }
+
+    if (null == localStorage.getItem('hasloaded')) {
+      this.jumpAhead();
     }
   }
 
@@ -150,7 +150,12 @@ export class GameComponent implements OnInit {
   showConversation(id: string) {
     this.enableConversationMode(true);
     let c: Conversation = game.reloadConversation(id);
-    this.convOptions = c.getOptions();
+    if (c !== null) {
+      this.convOptions = c.getOptions();
+      for (let text of c.text) {
+        this.addSentence(text.getText());
+      }
+    }
   }
 
   private showOneTimeMessages(interaction) {
@@ -164,8 +169,13 @@ export class GameComponent implements OnInit {
 
   onClick(event: MouseEvent) {
     const target = (event.currentTarget as HTMLInputElement);
-    this.addSentence('> ' + target.innerText);
-    //this.switchView();
+    let text = target.innerText;
+    this.addSentence('> ' + text);
+
+    let cId = localStorage.getItem('current-conversation');
+    let c: Conversation = game.reloadConversation(cId);
+    let option = c.findOption(text);
+    this.showConversation(option.conversationId);
   }
 
   jumpAhead() {

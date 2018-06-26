@@ -23,9 +23,9 @@ export class Game {
         return this.currentScene;
     }
 
-    reloadConversation(id : string): Conversation {
-        let conv : IConversation = (localStorage.getItem('current-scene') !== null) ? this.cLookup.listing[localStorage.getItem('current-conversation')] : null;
-        if(conv !== null){
+    reloadConversation(id: string): Conversation {
+        let conv: IConversation = (localStorage.getItem('current-scene') !== null) ? this.cLookup.listing[localStorage.getItem('current-conversation')] : null;
+        if (conv !== null && conv !== undefined) {
             this.currentConversation = conv.conversation;
             return this.currentConversation;
         }
