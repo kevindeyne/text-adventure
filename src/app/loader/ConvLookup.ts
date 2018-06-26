@@ -1,3 +1,4 @@
+import { CheckpointConversation } from './1_checkpoint/1_checkpoint_conversation';
 import { CheckpointApproachConversation } from './1_checkpoint/1_checkpoint_approach';
 import { Conversation } from './../domain/Conversation';
 import { IConversation } from './../domain/IConversation';
@@ -8,6 +9,7 @@ export class ConvLookup {
 
     constructor() {
         this.addConv(new CheckpointApproachConversation());
+        this.addConv(new CheckpointConversation());
     }
 
     private addConv(conv: IConversation) {

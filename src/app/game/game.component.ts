@@ -151,10 +151,10 @@ export class GameComponent implements OnInit {
     this.enableConversationMode(true);
     let c: Conversation = game.reloadConversation(id);
     if (c !== null) {
-      this.convOptions = c.getOptions();
       for (let text of c.text) {
         this.addSentence(text.getText());
       }
+      this.convOptions = c.getOptions();
     }
   }
 
@@ -175,7 +175,10 @@ export class GameComponent implements OnInit {
     let cId = localStorage.getItem('current-conversation');
     let c: Conversation = game.reloadConversation(cId);
     let option = c.findOption(text);
-    this.showConversation(option.conversationId);
+    if (null !== option) {
+      localStorage.setItem('current-conversation', option.conversationId);
+      this.showConversation(option.conversationId);
+    }
   }
 
   jumpAhead() {

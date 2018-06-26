@@ -32,7 +32,7 @@ export class Conversation {
         let result = [];
         for (let option of this.options) {
             let t = option.getText();
-            if (t !== null) {
+            if (t !== null && '' !== t) {
                 result.push(t);
             }
         }
