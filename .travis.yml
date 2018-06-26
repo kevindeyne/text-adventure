@@ -15,6 +15,7 @@ cache:
 install:
   - npm install -g yarn
   - npm install -g @angular/cli
+  - npm i
 
 script:
   - yarn build --base-href https://kevindeyne.github.io/text-adventure/
