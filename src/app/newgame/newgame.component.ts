@@ -1,3 +1,4 @@
+import { GameData } from './../domain/GameData';
 import { game } from './../globals/globals';
 import { Component, OnInit } from '@angular/core';
 import { UUID } from 'angular2-uuid';
@@ -25,6 +26,8 @@ export class NewgameComponent implements OnInit {
       
       game.reloadScene();
       this.router.navigate(['/game']);
+      game.data = new GameData();
+      game.saveData();
     /*} else {
       // todo: show are you sure
       this.router.navigate(['/game']);

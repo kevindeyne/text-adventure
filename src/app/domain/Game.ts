@@ -1,8 +1,8 @@
+import { GameData } from './GameData';
 import { ConvLookup } from './../loader/ConvLookup';
 import { IConversation } from './IConversation';
 import { SceneLookup } from './../loader/SceneLookup';
 import { IScene } from './IScene';
-import { Car } from './Car';
 import { Conversation } from './Conversation';
 
 export class Game {
@@ -12,7 +12,7 @@ export class Game {
     public currentScene: IScene;
     public currentConversation: Conversation;
 
-    public car: Car = new Car();
+    public data: GameData = new GameData();
 
     constructor() {
         this.reloadScene();
@@ -30,5 +30,19 @@ export class Game {
             return this.currentConversation;
         }
         return null;
+    }
+
+    saveData() {
+        if(this.data === null){
+            this.data = new GameData();
+        }
+        let data = JSON.stringify(this.data);
+        console.log('save: ' + data);
+        localStorage.setItem('data', data);
+    }
+
+    loadData() {
+        console.log('load: ' + localStorage.getItem('data'));
+        this.data = JSON.parse(localStorage.getItem('data'));
     }
 }

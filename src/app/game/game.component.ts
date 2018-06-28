@@ -37,8 +37,10 @@ export class GameComponent implements OnInit {
     }
 
     if (null == localStorage.getItem('hasloaded')) {
-      this.jumpAhead();
+      //this.jumpAhead();
     }
+
+    game.loadData();
   }
 
   loadHistory() {
@@ -125,6 +127,7 @@ export class GameComponent implements OnInit {
           this.handleScene(i);
           this.handleConversation(i);
           i.runAction(this.htmlTag);
+          game.saveData();
           break interactionLoop;
         }
       }
