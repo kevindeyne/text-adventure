@@ -1,5 +1,5 @@
 <div #parentDiv [style.bottom]="convHeight">
-  <p *ngFor='let sentence of sentences' [innerHTML]="sentence" [ngClass]="{'self': sentence.startsWith('> '), 'info': sentence.startsWith('(')}"></p>
+  <p *ngFor='let sentence of sentences' [innerHTML]="sentence" [ngClass]="{'info': sentence.startsWith('> ') || sentence.startsWith('(')}"></p>
 </div>
 <footer>
   <input type="text" [ngClass]="inputClass" autofocus #focus placeholder="Enter command" (keyup)="onKey($event)"  />

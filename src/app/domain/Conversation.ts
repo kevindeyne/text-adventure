@@ -28,6 +28,17 @@ export class Conversation {
         this.options.push(reply);
     }
 
+    addOptionWithAction(id: string, action: Function, text: string) {
+        this.addConditionalOptionWithAction(id, function () { return true; }, action, text);
+    }
+
+    addConditionalOptionWithAction(id: string, conditional: Function, action: Function, text: string) {
+        let reply = new ConditionalReply(text, conditional);
+        reply.conversationId = id;
+        reply.action = action;
+        this.options.push(reply);
+    }
+
     getOptions(): string[] {
         let result = [];
         for (let option of this.options) {
@@ -44,6 +55,9 @@ export class Conversation {
             let t = option.getText();
             if (t !== null) {
                 if (t === text) {
+                    if(option.action !== undefined){
+                        option.action();
+                    }
                     return option;
                 }
             }
