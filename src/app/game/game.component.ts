@@ -138,7 +138,7 @@ export class GameComponent implements OnInit {
     if (interaction.hasNextScene()) {
       this.enableConversationMode(false);
       localStorage.removeItem('game-history-loading-done');
-      localStorage.removeItem('current-conversation');      
+      localStorage.removeItem('current-conversation');
       game.reloadScene();
       this.load();
     }
@@ -187,6 +187,7 @@ export class GameComponent implements OnInit {
         localStorage.setItem('current-conversation', option.conversationId);
         this.showConversation(option.conversationId);
       }
+      game.saveData();
     }
   }
 
@@ -194,13 +195,25 @@ export class GameComponent implements OnInit {
     localStorage.setItem('hasloaded', '1');
     let counter = 0;
 
-    this.loadSceneThroughCommand('look around');
-    this.loadSceneThroughCommand('press button');
-    this.loadSceneThroughCommand('radio');
-    this.loadSceneThroughCommand('compartment');    
+    this.sendCommand('look around', counter);
+    this.sendCommand('press button', counter);
+    this.sendCommand('turn on the radio', counter);
+    this.sendCommand('open the compartment', counter);
+    this.clickElement(1, counter);
+    this.clickElement(1, counter);
+    this.clickElement(1, counter);
     this.clickElement(0, counter);
+    this.clickElement(1, counter);
+    this.clickElement(2, counter);
     this.clickElement(0, counter);
-    this.clickElement(0, counter);
+    this.sendCommand('leave the car', counter);
+  }
+
+  sendCommand(text: string, counter) {
+    let self = this;
+    setTimeout(function(){
+      self.loadSceneThroughCommand(text);
+    }, counter+100 + (counter++ * 500));
   }
 
   clickElement(index, counter){

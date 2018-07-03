@@ -19,7 +19,7 @@ export class CheckpointConversation2 implements IConversation {
         
         this.conversation.addText('\'Please state your reason for entering [Zone 349].\'');
 
-        this.conversation.addSceneSwitchOption(new ConditionalSceneSwitch('2_hostel_outside', function(){ return true; }), '"Business."');
-        this.conversation.addSceneSwitchOption(new ConditionalSceneSwitch('2_hostel_outside', function(){ return true; }), '"I am meeting Dr. Søren Johanson to retrieve a unique nano-processor he recovered from a restoration site here in Sweden. I have a meeting with this man at the \'Fallen Swan\'."');
+        this.conversation.addOption('1_checkpoint-conversation-3', '"Business."');
+        this.conversation.addOption('1_checkpoint-conversation-3', '"I am meeting Dr. Søren Johanson to retrieve a unique nano-processor he recovered from a restoration site here in Sweden. I have a meeting with this man at the \'Fallen Swan\'."');
     }
 }
