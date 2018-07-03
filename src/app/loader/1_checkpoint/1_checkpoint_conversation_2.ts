@@ -1,6 +1,7 @@
 import { game } from './../../globals/globals';
 import { Conversation } from './../../domain/Conversation';
 import { IConversation } from './../../domain/IConversation';
+import { ConditionalSceneSwitch } from '../../domain/ConditionalSceneSwitch';
 
 export class CheckpointConversation2 implements IConversation {
 
@@ -18,7 +19,7 @@ export class CheckpointConversation2 implements IConversation {
         
         this.conversation.addText('\'Please state your reason for entering [Zone 349].\'');
 
-        this.conversation.addOption('1_checkpoint-approach', '"Business."');
-        this.conversation.addOption('1_checkpoint-approach', '"I am meeting Dr. Søren Johanson to retrieve a unique nano-processor he recovered from a restoration site here in Sweden. I have a meeting with this man at the \'Fallen Swan\'."');
+        this.conversation.addSceneSwitchOption(new ConditionalSceneSwitch('2_hostel_outside', function(){ return true; }), '"Business."');
+        this.conversation.addSceneSwitchOption(new ConditionalSceneSwitch('2_hostel_outside', function(){ return true; }), '"I am meeting Dr. Søren Johanson to retrieve a unique nano-processor he recovered from a restoration site here in Sweden. I have a meeting with this man at the \'Fallen Swan\'."');
     }
 }

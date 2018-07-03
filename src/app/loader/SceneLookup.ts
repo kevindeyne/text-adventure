@@ -1,3 +1,4 @@
+import { HostelOutsideScene } from './2_hostel/2_hostel_outside';
 import { Scene } from './../domain/Scene';
 import { IScene } from './../domain/IScene';
 import { InitCarScene } from './0_intro/0_car';
@@ -12,6 +13,7 @@ export class SceneLookup {
         this.addScene(new InitCarScene());
         this.addScene(new CarDarkScene());
         this.addScene(new CarLightScene());
+        this.addScene(new HostelOutsideScene());
     }
 
     private addScene(scene: IScene) {

@@ -1,3 +1,4 @@
+import { ConditionalSceneSwitch } from './ConditionalSceneSwitch';
 import { ConditionalReply } from './ConditionalReply';
 import { ConditionalText } from './ConditionalText';
 export class Conversation {
@@ -28,6 +29,16 @@ export class Conversation {
         this.options.push(reply);
     }
 
+    addSceneSwitchOption(scene: ConditionalSceneSwitch, text: string) {
+        this.addSceneSwitchConditionalOption(scene, function () { return true; }, text);
+    }
+
+    addSceneSwitchConditionalOption(scene: ConditionalSceneSwitch, conditional: Function, text: string) {
+        let reply = new ConditionalReply(text, conditional);
+        reply.nextScene = scene;
+        this.options.push(reply);
+    }
+
     addOptionWithAction(id: string, action: Function, text: string) {
         this.addConditionalOptionWithAction(id, function () { return true; }, action, text);
     }
@@ -55,7 +66,7 @@ export class Conversation {
             let t = option.getText();
             if (t !== null) {
                 if (t === text) {
-                    if(option.action !== undefined){
+                    if (option.action !== undefined) {
                         option.action();
                     }
                     return option;

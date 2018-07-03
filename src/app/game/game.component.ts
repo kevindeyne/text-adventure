@@ -138,6 +138,7 @@ export class GameComponent implements OnInit {
     if (interaction.hasNextScene()) {
       this.enableConversationMode(false);
       localStorage.removeItem('game-history-loading-done');
+      localStorage.removeItem('current-conversation');      
       game.reloadScene();
       this.load();
     }
@@ -180,16 +181,32 @@ export class GameComponent implements OnInit {
     let c: Conversation = game.reloadConversation(cId);
     let option = c.findOption(text);
     if (null !== option) {
-      localStorage.setItem('current-conversation', option.conversationId);
-      this.showConversation(option.conversationId);
+      if(option.conversationId === undefined){
+        this.handleScene(option.getInteraction());
+      } else {
+        localStorage.setItem('current-conversation', option.conversationId);
+        this.showConversation(option.conversationId);
+      }
     }
   }
 
   jumpAhead() {
     localStorage.setItem('hasloaded', '1');
+    let counter = 0;
+
     this.loadSceneThroughCommand('look around');
     this.loadSceneThroughCommand('press button');
     this.loadSceneThroughCommand('radio');
-    this.loadSceneThroughCommand('compartment');
+    this.loadSceneThroughCommand('compartment');    
+    this.clickElement(0, counter);
+    this.clickElement(0, counter);
+    this.clickElement(0, counter);
+  }
+
+  clickElement(index, counter){
+    setTimeout(function(){
+      let items: HTMLParagraphElement[] = Array.from(document.querySelectorAll('footer p'));
+      items[index].click();
+    }, counter+100 + (counter++ * 500));
   }
 }
