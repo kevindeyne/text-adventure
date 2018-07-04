@@ -8,6 +8,11 @@ export class GameData {
     public nationality: string;
     public company: string;
 
+    public lookAround: boolean;
+    public lookAt: string; 
+    public onetime1: boolean;
+    public onetime2: boolean;
+
     constructor() {
     }
 }

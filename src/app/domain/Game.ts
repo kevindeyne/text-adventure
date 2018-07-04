@@ -6,6 +6,7 @@ import { IScene } from './IScene';
 import { Conversation } from './Conversation';
 
 export class Game {
+
     public sLookup = new SceneLookup();
     public cLookup = new ConvLookup();
 
@@ -33,10 +34,11 @@ export class Game {
     }
 
     saveData() {
-        if(this.data === null){
+        if (this.data === null) {
             this.data = new GameData();
         }
         let data = JSON.stringify(this.data);
+        console.clear();
         console.log('save: ' + data);
         localStorage.setItem('data', data);
     }
@@ -44,5 +46,19 @@ export class Game {
     loadData() {
         console.log('load: ' + localStorage.getItem('data'));
         this.data = JSON.parse(localStorage.getItem('data'));
+    }
+
+    resetOneTimes() {
+        this.data.onetime1 = false;
+        this.data.onetime2 = false;
+        this.data.lookAround = false;
+        this.data.lookAt = null;
+    }
+
+    conditionalsSet(): boolean {
+        return this.data.lookAt != null ||
+            this.data.lookAround ||
+            this.data.onetime1 ||
+            this.data.onetime2;
     }
 }

@@ -37,7 +37,7 @@ export class GameComponent implements OnInit {
     }
 
     if (null == localStorage.getItem('hasloaded')) {
-      //this.jumpAhead();
+      this.jumpAhead();
     }
 
     game.loadData();
@@ -51,7 +51,7 @@ export class GameComponent implements OnInit {
   }
 
   load() {
-    if (this.loadedSceneId !== game.currentScene.id) {
+    if (this.loadedSceneId !== game.currentScene.id || game.conditionalsSet()) {
       if (localStorage.getItem('game-history-loading-done') === null) {
         this.loadedSceneId = game.currentScene.id;
         let s = game.currentScene.scene;
@@ -121,12 +121,14 @@ export class GameComponent implements OnInit {
     interactionLoop: for (let i of s.interactions) {
       for (let c of i.commands) {
         if (command.includes(c)) {
+          i.runPreAction();
           this.addOldClassToAll();
           this.addSentence('> ' + command);
           this.showOneTimeMessages(i);
           this.handleScene(i);
           this.handleConversation(i);
           i.runAction(this.htmlTag);
+          game.resetOneTimes();
           game.saveData();
           break interactionLoop;
         }
@@ -187,6 +189,7 @@ export class GameComponent implements OnInit {
         localStorage.setItem('current-conversation', option.conversationId);
         this.showConversation(option.conversationId);
       }
+      game.resetOneTimes();
       game.saveData();
     }
   }

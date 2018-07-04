@@ -10,8 +10,12 @@ export class Interaction {
     public action: Function;
     public oneTimeMessages: ConditionalText[] = [];
 
+    private preAction: Function;
+    private preActionSet: boolean;
+
     constructor(commands) {
         this.commands = commands;
+        this.preActionSet = false;
     }
 
     loadScene() {
@@ -32,6 +36,18 @@ export class Interaction {
         }
     }
 
+    runPreAction(): any {
+        if (undefined !== this.preAction) {
+            this.preAction();
+        }
+      }
+    
+
+    setPreAction(action: Function){
+        this.preAction = action;
+        this.preActionSet = true;
+    }
+
     addText(text: string) {
         this.oneTimeMessages.push(new ConditionalText(text, function () { return true; }));
     }
@@ -45,6 +61,6 @@ export class Interaction {
     }
 
     hasNextScene(): boolean {
-        return this.nextScene !== undefined && this.nextScene.getNextSceneId() !== null;
+        return (this.nextScene !== undefined && this.nextScene.getNextSceneId() !== null) || this.preActionSet;
     }
 }
