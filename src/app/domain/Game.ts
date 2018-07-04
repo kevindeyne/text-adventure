@@ -37,15 +37,24 @@ export class Game {
         if (this.data === null) {
             this.data = new GameData();
         }
+        this.clearOneTimes();
         let data = JSON.stringify(this.data);
         console.clear();
         console.log('save: ' + data);
         localStorage.setItem('data', data);
+        this.resetOneTimes();
     }
 
     loadData() {
         console.log('load: ' + localStorage.getItem('data'));
         this.data = JSON.parse(localStorage.getItem('data'));
+    }
+
+    clearOneTimes(){
+        this.data.onetime1 = undefined;
+        this.data.onetime2 = undefined;
+        this.data.lookAround = undefined;
+        this.data.lookAt = undefined;
     }
 
     resetOneTimes() {

@@ -37,7 +37,7 @@ export class GameComponent implements OnInit {
     }
 
     if (null == localStorage.getItem('hasloaded')) {
-      this.jumpAhead();
+      //this.jumpAhead();
     }
 
     game.loadData();
@@ -128,7 +128,6 @@ export class GameComponent implements OnInit {
           this.handleScene(i);
           this.handleConversation(i);
           i.runAction(this.htmlTag);
-          game.resetOneTimes();
           game.saveData();
           break interactionLoop;
         }
@@ -189,7 +188,6 @@ export class GameComponent implements OnInit {
         localStorage.setItem('current-conversation', option.conversationId);
         this.showConversation(option.conversationId);
       }
-      game.resetOneTimes();
       game.saveData();
     }
   }
@@ -210,6 +208,9 @@ export class GameComponent implements OnInit {
     this.clickElement(2, counter);
     this.clickElement(0, counter);
     this.sendCommand('leave the car', counter);
+    this.sendCommand('look around', counter);
+    this.sendCommand('look at cables', counter);
+    this.sendCommand('go inside', counter);
   }
 
   sendCommand(text: string, counter) {
